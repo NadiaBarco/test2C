@@ -101,9 +101,9 @@ posPrimerPar (x,y,z) | x `mod` 2 == 0 = 0
                      |otherwise =4
 
 posPrimerPar1 :: (Integer,Integer,Integer) -> Integer
-posPrimerPar1 (x,y,z) | even x  = 0
-                      | even y = 1
-                      | even z = 2
+posPrimerPar1 (x,y,z) | even x  = 1
+                      | even y = 2
+                      | even z = 3
                       | otherwise = 4
 -}
 crearPar:: a-> b -> (a,b)
@@ -137,3 +137,41 @@ comparar:: Integer -> Integer -> Integer
 comparar n m |  mod n 10 + mod (div n  10) 10 > mod m 10 + mod (div m  10) 10 = - 1
              | mod n 10 + mod (div n  10) 10 < mod m 10 + mod (div m  10) 10 = 1
              | otherwise = 0
+
+
+------------GUIA 4-----------
+
+fibonacci:: Integer -> Integer
+fibonacci 0 = 0
+fibonacci 1 = 1
+fibonacci n = fibonacci (n-2) + fibonacci (n-1)
+
+parteEnrtera :: Float -> Integer
+parteEnrtera n = round n
+
+
+esDivisible:: Integer -> Integer -> Bool
+esDivisible n m | m == n = False 
+                | otherwise = esDivisible n (m-n)
+
+--
+sumaImpares:: Integer -> Integer 
+sumaImpares n = sumaImparesAux n 1 0
+
+sumaImparesAux :: Integer -> Integer -> Integer -> Integer
+sumaImparesAux n m c|  c == n = 0
+                    |mod m 2 /= 0 = m + sumaImparesAux n (m+1) (c+1)
+                    |otherwise = sumaImparesAux n (m+1) c
+------------REHACER----------
+medioFact:: Integer -> Integer 
+medioFact n = medioFactAux n 1
+
+medioFactAux:: Integer -> Integer -> Integer
+medioFactAux n i | i == div (n-1) 2 =  i 
+                 | i < n = (n -2*i)*medioFactAux n (i+1)
+                 |otherwise = (n -2*i)*medioFactAux n (i+1)
+
+
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial n = n*factorial (n-1)
