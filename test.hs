@@ -1,5 +1,3 @@
-import Data.Array (Ix(index))
-import GHC.Exts.Heap (GenClosure(fun))
 f:: Integer -> Integer
 f 1 =8
 f 4 = 131
@@ -257,13 +255,147 @@ sucecionAproxRaizDe2:: Integer -> Float
 sucecionAproxRaizDe2 1  = 2
 sucecionAproxRaizDe2 n = 2 + 1 / sucecionAproxRaizDe2 (n-1)
 
+
+---------------- REVISAR TODO-----------------------------
 --
-sumatoriaDoble :: Integer -> Integer -> Integer
-sumatoriaDoble n m =sumatoriaDobleIndiceI n 1 m 1
+--sumatoriaDoble :: Integer -> Integer -> Integer
+--sumatoriaDoble n m =sumatoriaDobleIndiceI n 1 m 1
 
-sumatoriaDobleIndiceI :: Integer -> Integer -> Integer -> Integer -> Integer
-sumatoriaDobleIndiceI 1 i 1 j = 1
-sumatoriaDobleIndiceI n i m j | n == i && m == j = i^j
-                          | otherwise = i^j + sumatoriaDobleIndiceI n (i+1) m (j+1)
+--umatoriaDobleIndiceI :: Integer -> Integer -> Integer -> Integer -> Integer
+--sumatoriaDobleIndiceI 1 i 1 j = 1
+--sumatoriaDobleIndiceI n i m j | n
 
+{--sumaPotencias13:: Integer -> Integer -> Integer
+sumaPotencias13 1 _ = sumaPontenciasFijoI 1 m
+sumaPotencias13 n m = sumaPontenciasFijoI n m + sumaPotencias13 (n-1) m 
+
+sumaPontenciasFijoI i 1 = i
+sumaPontenciasFijoI i m = i^m + sumaPontenciasFijoI i (m-1)--}
+
+
+--Sumando uno de mas ver--
+sumaPotencias :: Integer -> Integer -> Integer -> Integer
+sumaPotencias 1 n m = 1
+sumaPotencias q n m = q^(n+m) + sumaPotencias (q-1) n m 
+
+--umaRacionales:: Integer -> Integer -> Float
+--sumaRacionales n m = fromIntegral(sumaGauss n )* fromIntegral(serieArmonica m 1 )
+
+{--sumaGauss :: Integer -> Integer
+sumaGauss 1 = 1
+sumaGauss n = (n*(n+1))/ 2
+--}
+serieArmonica :: Integer -> Integer -> Integer
+serieArmonica 1 i = 1 
+serieArmonica n i | n == i = 0
+                  | otherwise = serieArmonica n (i+1)
+
+
+menorDivisor:: Integer -> Integer
+menorDivisor n = menorDivisorDesde n 2
+
+menorDivisorDesde :: Integer -> Integer ->Integer
+menorDivisorDesde n i | mod n i == 0 = i 
+                      | otherwise = menorDivisorDesde n (i+1) 
+
+--menorDivisorHsta n 1 = 1
+--menorDivisorHsta n d | mod n d  == 0 =1 + cantidadDeDivisoresHasta n (d-1)
+--                     | otherwise = cantidadDeDivisoresHasta n (d-1)
+
+esPrimo:: Integer -> Bool
+esPrimo n = menorDivisor n  == n 
+--
+sonCoprimos:: Integer-> Integer -> Bool
+sonCoprimos n m | n == m = False
+                | mod n m == 0 || mod m n  == 0 =False
+                |otherwise =True
+--------------------------------------------
+----Idea ejercicio 19 ---
+esSumaInicialesPrimos :: Integer -> Bool
+esSumaInicialesPrimos n = sumaHastaElNPrimo n 2 0 == n
+
+sumaHastaElNPrimo:: Integer-> Integer -> Integer -> Integer
+sumaHastaElNPrimo 2 _ _ = 2
+sumaHastaElNPrimo n p c | n == c && not (esPrimo p) =0 
+                        | n == c && esPrimo p = p + sumaHastaElNPrimo n (p+1) c
+                        | otherwise= sumaHastaElNPrimo (n-1) (p+1) (c+1)
+
+--------------------
+siguientePrimo :: Integer -> Integer 
+siguientePrimo n | esPrimo n = n
+                 | otherwise = siguientePrimo (n+1)
+
+
+enesimoPrimo:: Integer -> Integer
+enesimoPrimo n = enesimoPrimoCont n 2 0
+
+enesimoPrimoCont:: Integer -> Integer -> Integer -> Integer
+enesimoPrimoCont 1 p c = 2
+enesimoPrimoCont n p c | n == c && esPrimo(p) = p
+                       | otherwise = enesimoPrimoCont n (p+1) (c+1)
+------
+
+esFibonacci :: Integer -> Bool
+esFibonacci 1 = True
+esFibonacci n = perteneceAFibo n 1
+
+perteneceAFibo :: Integer -> Integer -> Bool
+perteneceAFibo n m | n == fibonacci(m) = True
+                    | n < fibonacci (m) = False
+                   | otherwise= perteneceAFibo n (m+1)
+
+
+mayorDigitoPar:: Integer -> Integer
+mayorDigitoPar 1 = 1
+mayorDigitoPar n = mayorDivisor n 2 0
+
+mayorDivisor::Integer -> Integer -> Integer -> Integer
+mayorDivisor 1 _ _= 1
+mayorDivisor n d c | mod n d == 0 && n == c = d
+                   | mod n d /=0 = mayorDivisor n (d+1) (c+1)
+                   | otherwise = mayorDivisor n (d+1) (c)
+
+
+
+----------------------GUIA 5 RECURSION SOBRE LISTAS------------------
+
+longitud :: [t] -> Integer
+longitud [] = 0
+longitud l = 1 + longitud (tail l)
+
+ultimo :: [t] -> t
+ultimo [x] = x
+ultimo x = ultimo (tail x)
+
+
+
+--hayRepetidos :: (Eq t) -> [t] -> Bool
+--hayRepetidos (x:xs) = 
+
+{--
+cantidadDeApariciones :: t -> [t] -> Integer
+cantidadDeApariciones _ [] = 0
+cantidadDeApariciones e (x:xs) | pertenece e (x:xs) = 1
+                               | 
+--}
+
+reverso :: [t] -> [t]
+reverso [x] = [x]
+reverso (x:xs) = reverso (xs) ++ [x]
+
+---Ejercicio 2 --
+pertenece::(Eq t) => t -> [t] -> Bool
+pertenece _ [] = False
+pertenece e (x:xs) = e == x || pertenece e xs
+                   
+todosIguales:: (Eq t) => [t] -> Bool
+todosIguales [x] = True
+todosIguales (x:xs) | x /= head xs = False
+                    | otherwise= todosIguales xs 
+
+todosDistintos:: (Eq t) => [t] -> Bool
+todosDistintos [x] = True
+todosDistintos (x:xs)| x == head xs = False
+                     | otherwise = todosDistintos xs
+-------------
 
